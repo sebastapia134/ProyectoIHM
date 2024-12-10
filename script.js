@@ -9,6 +9,12 @@ const images = {
 let frutasMostradas = [];
 let puntaje = 0;
 let cuadranteSeleccionado = null;
+let frutaPreguntaActual = null;
+let cantidadFrutaPreguntaActual = 0;
+let opcionesGeneradas = [];
+let opcionCorrecta = null;
+
+
 
 // Elementos HTML
 const startModal = document.getElementById('startModal');
@@ -44,6 +50,8 @@ function mostrarFrutas() {
     const cantidadFrutas = Math.floor(Math.random() * 5) + 1;
     frutasMostradas = [];
 
+    console.log(`Generando ${cantidadFrutas} frutas...`); // Registra la cantidad de frutas generadas
+
     for (let i = 0; i < cantidadFrutas; i++) {
         const fruta = frutas[Math.floor(Math.random() * frutas.length)];
         frutasMostradas.push(fruta);
@@ -51,25 +59,38 @@ function mostrarFrutas() {
         img.src = images[fruta];
         imagesContainer.appendChild(img);
     }
+
+    console.log(`Frutas mostradas: ${frutasMostradas.join(', ')}`); // Registra las frutas que se mostraron
 }
+
 
 // Función que muestra la pregunta
 function mostrarPregunta() {
     imagesContainer.innerHTML = '';
-    const frutaPregunta = frutasMostradas[Math.floor(Math.random() * frutasMostradas.length)];
-    const cantidadFrutaPregunta = frutasMostradas.filter(fruta => fruta === frutaPregunta).length;
-    const opciones = generarOpciones(cantidadFrutaPregunta, frutaPregunta);
+    frutaPreguntaActual = frutasMostradas[Math.floor(Math.random() * frutasMostradas.length)];
+    cantidadFrutaPreguntaActual = frutasMostradas.filter(fruta => fruta === frutaPreguntaActual).length;
 
-    questionContainer.innerHTML = `¿Cuántas ${frutaPregunta} había?`;
+    // Generar opciones
+    const opciones = generarOpciones(cantidadFrutaPreguntaActual, frutaPreguntaActual);
+
+    // Almacenar las opciones generadas y la respuesta correcta
+    opcionesGeneradas = opciones;
+    opcionCorrecta = cantidadFrutaPreguntaActual;
+
+    console.log(`Pregunta generada: ¿Cuántas ${frutaPreguntaActual} había?`);
+    console.log(`Cantidad de ${frutaPreguntaActual}: ${cantidadFrutaPreguntaActual}`);
+
+    questionContainer.innerHTML = `¿Cuántas ${frutaPreguntaActual} había?`;
     optionsContainer.innerHTML = '';
     
     opciones.forEach((opcion, index) => {
         const button = document.createElement('button');
         button.textContent = `${optionsLetras[index]}: ${opcion}`;
-        button.addEventListener('click', () => verificarRespuesta(opcion, cantidadFrutaPregunta));
+        button.addEventListener('click', () => verificarRespuesta(opcion, cantidadFrutaPreguntaActual));
         optionsContainer.appendChild(button);
     });
 }
+
 
 // Función que genera opciones aleatorias
 function generarOpciones(cantidadFrutaPregunta, frutaPregunta) {
@@ -83,18 +104,29 @@ function generarOpciones(cantidadFrutaPregunta, frutaPregunta) {
     return opciones.sort(() => Math.random() - 0.5);
 }
 
-// Función para verificar la respuesta
-function verificarRespuesta(opcionSeleccionada, cantidadFrutaPregunta) {
-    if (opcionSeleccionada === cantidadFrutaPregunta) {
+// Función para verificar la respuesta automáticamente
+function verificarRespuestaAutomatica() {
+    if (cuadranteSeleccionado === null) return;
+
+    const indexOpcionCorrecta = opcionesGeneradas.indexOf(opcionCorrecta);
+    const opcionCorrectaSeleccionada = optionsLetras[indexOpcionCorrecta];
+
+    console.log(`Fruta seleccionada: ${frutaPreguntaActual}`);
+    console.log(`Cantidad correcta: ${opcionCorrecta}`);
+    console.log(`Opción seleccionada: ${cuadranteSeleccionado}`);
+    console.log(`Opción correcta: ${opcionCorrectaSeleccionada}`);
+
+    if (cuadranteSeleccionado === opcionCorrectaSeleccionada) {
         feedback.textContent = '¡Correcto!';
         puntaje += 100;
     } else {
-        feedback.textContent = `Incorrecto, la respuesta correcta era ${cantidadFrutaPregunta}.`;
+        feedback.textContent = `Incorrecto, la respuesta correcta era ${opcionCorrectaSeleccionada}.`;
         puntaje -= 50;
     }
 
     puntajeDisplay.textContent = `Puntaje: ${puntaje}`;
 
+    // Restablecer vista
     setTimeout(() => {
         feedback.textContent = '';
         imagesContainer.innerHTML = '';
@@ -107,6 +139,8 @@ function verificarRespuesta(opcionSeleccionada, cantidadFrutaPregunta) {
         }, 1000);
     }, 2000);
 }
+
+
 
 // Iniciar la cámara
 function iniciarCamara() {
@@ -168,10 +202,10 @@ function dibujarCuadrantes() {
     ctx.fillText('D', 3 * width / 4, 3 * height / 4);
 }
 
-let cuadranteDetectado = false; 
-let ultimoCuadranteDetectado = null; 
-let detectando = false; 
-let tiempoDeEspera = false;
+let detectando = false; // Evitar múltiples procesos simultáneos
+let tiempoDeEspera = false; // Evitar detecciones consecutivas inmediatas
+let ultimoCuadranteDetectado = null; // Registrar el último cuadrante detectado
+let colorRojoDetectado = false; // Estado para saber si el rojo fue detectado
 
 function detectarPaleta() {
     if (detectando || tiempoDeEspera) return;
@@ -180,9 +214,6 @@ function detectarPaleta() {
     console.log("Detectando... no te muevas");
 
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    const data = imageData.data;
-
     const cuadrantes = {
         A: { x: 0, y: 0, width: canvas.width / 2, height: canvas.height / 2 },
         B: { x: canvas.width / 2, y: 0, width: canvas.width / 2, height: canvas.height / 2 },
@@ -190,31 +221,49 @@ function detectarPaleta() {
         D: { x: canvas.width / 2, y: canvas.height / 2, width: canvas.width / 2, height: canvas.height / 2 }
     };
 
+    // Variable para saber si se detectó rojo en algún cuadrante
+    let rojoDetectadoEnAlgúnCuadrante = false;
+
+    // Recorremos los cuadrantes para detectar rojo
     Object.keys(cuadrantes).forEach(cuadrante => {
         const { x, y, width, height } = cuadrantes[cuadrante];
         const pixels = ctx.getImageData(x, y, width, height).data;
         const colorRojo = detectarRojo(pixels);
 
-        if (colorRojo && cuadrante !== ultimoCuadranteDetectado) {
-            cuadranteSeleccionado = cuadrante;
-            console.log(`Respuesta ${cuadrante} seleccionada`);
+        if (colorRojo) {
+            if (!rojoDetectadoEnAlgúnCuadrante) {
+                // Si es la primera vez que detectamos rojo
+                console.log("Detectando... no te muevas");
+                rojoDetectadoEnAlgúnCuadrante = true;
+            }
 
-            ultimoCuadranteDetectado = cuadrante;
-            cuadranteDetectado = true;
+            if (cuadrante !== ultimoCuadranteDetectado) {
+                cuadranteSeleccionado = cuadrante;
+                console.log(`Respuesta ${cuadrante} seleccionada`);
 
-            setTimeout(() => {
-                cuadranteDetectado = false;
-            }, 3000);
+                ultimoCuadranteDetectado = cuadrante; // Actualizar cuadrante detectado
+                verificarRespuestaAutomatica(); // Verificar la respuesta
 
-            tiempoDeEspera = true;
-            setTimeout(() => {
-                tiempoDeEspera = false;
-            }, 3000);
+                // Bloquear detección adicional temporalmente
+                tiempoDeEspera = true;
+                setTimeout(() => {
+                    tiempoDeEspera = false; // Reanudar detección
+                    ultimoCuadranteDetectado = null; // Resetear el último cuadrante
+                }, 3000);
+            }
         }
     });
 
+    // Si no hay más color rojo, resetear el estado
+    if (!rojoDetectadoEnAlgúnCuadrante && colorRojoDetectado) {
+        console.log("Se detuvo el movimiento, prepárate para detectar nuevamente.");
+        colorRojoDetectado = false;
+    } else if (rojoDetectadoEnAlgúnCuadrante) {
+        colorRojoDetectado = true; // Aseguramos que detectamos rojo al menos una vez
+    }
+
     setTimeout(() => {
-        detectando = false;
+        detectando = false; // Permitir nuevas detecciones
     }, 1000);
 }
 
@@ -223,7 +272,7 @@ function detectarRojo(pixels) {
         const r = pixels[i];
         const g = pixels[i + 1];
         const b = pixels[i + 2];
-        if (r > 150 && g < 50 && b < 50) {
+        if (r > 150 && g < 50 && b < 50) { // Condición de color rojo
             return true;
         }
     }
