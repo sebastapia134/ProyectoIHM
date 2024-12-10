@@ -1,0 +1,116 @@
+/* Configuración general */
+body {
+    display: flex;
+    height: 100vh;
+    margin: 0;
+    font-family: "Host Grotesk", sans-serif;
+    
+}
+
+#sidebar {
+    display: flex;
+    align-items: center; /* Centra verticalmente el contenido */
+    justify-content: center; /* Centra horizontalmente el contenido */
+    height: 575px;
+    width: 155px;
+    background-color: aquamarine;
+    background-image: url("img/imagen__0000s_0026_Capa\ 8.jpg");
+}
+
+#profile-picture {
+    height: 100px; /* Tamaño de la foto de perfil */
+    width: 100px;
+    border-radius: 50%; /* Hace la imagen circular */
+    background-color: white; /* Color de fondo temporal */
+    background-image: url("img/profile.jpg");
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); /* Propiedad de la sombra */
+
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+#principal {
+    position: relative; /* Necesario para posicionar los hijos absolutamente */
+    height: 575px;
+    width: 765px;
+    background-color: rgb(127, 168, 255);
+    background-image: url("img/raton.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    margin-right: 50px;
+}
+
+/* Estilo para los textos con sombra y color dorado */
+#jugar {
+    position: absolute;
+    top: 60%; /* Centrado verticalmente */
+    left: 15%; /* Centrado horizontalmente */
+    transform: translate(-50%, -50%); /* Ajusta para centrar exactamente */
+    font-size: 40px;
+    font-weight: bold;
+    color: #FFD700; /* Color dorado */
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7); /* Sombra negra */
+}
+
+#saludo {
+    position: absolute;
+    bottom: 20px; /* Desde la parte inferior */
+    left: 20px;
+    font-size: 30px;
+    font-weight: bold;
+    border-radius: 10px;
+    padding: 10px 20px;
+    color: #ffffff; /* Color dorado */
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7); /* Sombra negra */
+}
+
+#ayuda {
+    position: absolute;
+    top: 20px;
+    right: 20px; /* Esquina superior derecha */
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo semitransparente */
+    height: 40px;
+    width: 40px;
+    border-radius: 50%; /* Botón redondo */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#right-container {
+    display: flex;
+    flex-direction: column; /* Apila los hijos verticalmente */
+}
+
+#configuracion {
+    height: 290px;
+    width: 320px;
+    background-color: brown;
+    background-image: url("img/raton2.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 30px;
+    cursor: pointer;
+}
+
+#salir {
+    height: 290px;
+    width: 320px;
+    background-color: rgb(42, 165, 106);
+    background-image: url("img/raton3.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    cursor: pointer;
+}

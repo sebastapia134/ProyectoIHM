@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Frutas</title>
+    <link rel="stylesheet" href="estilosJuego.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Modal de inicio -->
+    <div id="startModal" class="modal">
+        <div class="modal-content">
+            <h2>¡Bienvenido al Juego! 🐭</h2>
+            <p>En este juego se te mostrarán algunas frutas y deberás adivinar cuántas de ellas son un tipo específico. Haz clic en "Entendido" para comenzar.</p>
+            <button id="startBtn">Entendido</button>
+        </div>
+    </div>
+
+    <!-- Contenedor de juego -->
+    <div id="gameContainer" class="game-container">
+        <div id="imagesContainer"></div>
+        <div id="questionContainer"></div>
+        <div id="optionsContainer"></div>
+        <div id="feedback"></div>
+        <div id="puntajeDisplay" style="position: absolute; top: 10px; right: 10px;">Puntaje: 0</div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
