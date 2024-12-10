@@ -115,14 +115,30 @@ function iniciarCamara() {
             video.srcObject = stream;
             video.play();
             document.body.appendChild(video);
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
 
-            // Dividir en cuadrantes
-            dibujarCuadrantes();
+            video.onloadedmetadata = function() {
+                const videoWidth = 320;  
+                const videoHeight = 240;
 
-            // Detectar color cada segundo
-            setInterval(detectarPaleta, 1000);
+                canvas.width = videoWidth;
+                canvas.height = videoHeight;
+
+                video.style.position = 'absolute';
+                video.style.top = '50px'; 
+                video.style.right = '20px'; 
+                video.style.width = `${videoWidth}px`;
+                video.style.height = `${videoHeight}px`;
+                video.style.zIndex = '-1'; 
+
+                canvas.style.position = 'absolute';
+                canvas.style.top = '50px';
+                canvas.style.right = '20px';
+                canvas.style.zIndex = '1';
+
+                dibujarCuadrantes(); 
+
+                setInterval(detectarPaleta, 1000);
+            };
         })
         .catch(err => {
             console.error('Error al acceder a la cámara: ', err);
@@ -137,7 +153,6 @@ function dibujarCuadrantes() {
     const width = canvas.width;
     const height = canvas.height;
 
-    // Dividir en 4 cuadrantes
     ctx.beginPath();
     ctx.moveTo(width / 2, 0);
     ctx.lineTo(width / 2, height);
@@ -145,22 +160,29 @@ function dibujarCuadrantes() {
     ctx.lineTo(width, height / 2);
     ctx.stroke();
 
-    // Etiquetas A, B, C, D
     ctx.fillStyle = 'white';
     ctx.font = '30px Arial';
-    ctx.fillText('A', width / 4, height / 4); // Cuadrante A
-    ctx.fillText('B', 3 * width / 4, height / 4); // Cuadrante B
-    ctx.fillText('C', width / 4, 3 * height / 4); // Cuadrante C
-    ctx.fillText('D', 3 * width / 4, 3 * height / 4); // Cuadrante D
+    ctx.fillText('A', width / 4, height / 4);
+    ctx.fillText('B', 3 * width / 4, height / 4);
+    ctx.fillText('C', width / 4, 3 * height / 4);
+    ctx.fillText('D', 3 * width / 4, 3 * height / 4);
 }
 
-// Función para detectar la paleta roja
+let cuadranteDetectado = false; 
+let ultimoCuadranteDetectado = null; 
+let detectando = false; 
+let tiempoDeEspera = false;
+
 function detectarPaleta() {
+    if (detectando || tiempoDeEspera) return;
+
+    detectando = true;
+    console.log("Detectando... no te muevas");
+
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const data = imageData.data;
 
-    // Dividir la imagen en los cuadrantes
     const cuadrantes = {
         A: { x: 0, y: 0, width: canvas.width / 2, height: canvas.height / 2 },
         B: { x: canvas.width / 2, y: 0, width: canvas.width / 2, height: canvas.height / 2 },
@@ -168,44 +190,41 @@ function detectarPaleta() {
         D: { x: canvas.width / 2, y: canvas.height / 2, width: canvas.width / 2, height: canvas.height / 2 }
     };
 
-    // Detectar el color rojo en los cuadrantes
     Object.keys(cuadrantes).forEach(cuadrante => {
         const { x, y, width, height } = cuadrantes[cuadrante];
         const pixels = ctx.getImageData(x, y, width, height).data;
         const colorRojo = detectarRojo(pixels);
 
-        if (colorRojo) {
+        if (colorRojo && cuadrante !== ultimoCuadranteDetectado) {
             cuadranteSeleccionado = cuadrante;
+            console.log(`Respuesta ${cuadrante} seleccionada`);
+
+            ultimoCuadranteDetectado = cuadrante;
+            cuadranteDetectado = true;
+
             setTimeout(() => {
-                if (cuadranteSeleccionado === 'A') {
-                    console.log('Respuesta A seleccionada');
-                    // Lógica para elegir la respuesta A
-                }
-                if (cuadranteSeleccionado === 'B') {
-                    console.log('Respuesta B seleccionada');
-                    // Lógica para elegir la respuesta B
-                }
-                if (cuadranteSeleccionado === 'C') {
-                    console.log('Respuesta C seleccionada');
-                    // Lógica para elegir la respuesta C
-                }
-                if (cuadranteSeleccionado === 'D') {
-                    console.log('Respuesta D seleccionada');
-                    // Lógica para elegir la respuesta D
-                }
-            }, 3000); // Esperar 3 segundos
+                cuadranteDetectado = false;
+            }, 3000);
+
+            tiempoDeEspera = true;
+            setTimeout(() => {
+                tiempoDeEspera = false;
+            }, 3000);
         }
     });
+
+    setTimeout(() => {
+        detectando = false;
+    }, 1000);
 }
 
-// Función para detectar el color rojo en los píxeles
 function detectarRojo(pixels) {
     for (let i = 0; i < pixels.length; i += 4) {
         const r = pixels[i];
         const g = pixels[i + 1];
         const b = pixels[i + 2];
         if (r > 150 && g < 50 && b < 50) {
-            return true; // Color rojo detectado
+            return true;
         }
     }
     return false;

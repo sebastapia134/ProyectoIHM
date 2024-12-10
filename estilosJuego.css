@@ -14,6 +14,7 @@ background-image: url("img/mosaico.jpg");    font-family: "Host Grotesk", sans-s
 .game-container {
     text-align: center;
     display: none;
+    margin-left: 10px;
 }
 
 #imagesContainer img {
@@ -55,6 +56,7 @@ button {
     width: 80%;
     max-width: 600px;
     margin: 20px auto;
+    margin-left: 15px;
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -194,3 +196,53 @@ button:active {
         opacity: 1;
     }
 }
+
+#cuadrantes {
+    z-index: 999;
+    position: absolute;
+    top: 50px; /* Ajusta esta posición si es necesario */
+    right: 20px; /* Ajusta esta posición si es necesario */
+    width: 320px; /* Asegúrate de que esto coincida con el tamaño del video */
+    height: 240px; /* Asegúrate de que esto coincida con el tamaño del video */
+    border: 2px solid white;
+}
+
+#cuadrantes::before, #cuadrantes::after {
+    content: '';
+    position: absolute;
+    background-color: white;
+    z-index: 2;
+}
+
+#cuadrantes::before {
+    width: 2px;
+    height: 100%;
+    left: 50%;
+    top: 0;
+}
+
+#cuadrantes::after {
+    height: 2px;
+    width: 100%;
+    top: 50%;
+    left: 0;
+}
+
+/* Añadir etiquetas de los cuadrantes */
+#cuadrantes div {
+    position: absolute;
+    font-size: 30px;
+    color: white;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+}
+
+/* Posiciones de las etiquetas A, B, C, D */
+#cuadrantes .a { top: 10%; left: 10%; }
+#cuadrantes .b { top: 10%; right: 10%; }
+#cuadrantes .c { bottom: 10%; left: 10%; }
+#cuadrantes .d { bottom: 10%; right: 10%; }
+
+/* Opcional: posición de las letras A, B, C, D en la parte superior izquierda de cada cuadrante */
+
+
