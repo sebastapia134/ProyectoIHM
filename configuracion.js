@@ -18,7 +18,7 @@ function updateFontSize(change) {
 // Actualizar y mostrar escala
 function updateScale(change) {
   let scale = parseFloat(localStorage.getItem("scale")) || 1.0;
-  scale = Math.min(2.0, Math.max(0.5, scale + change)); // Limitar entre 0.5 y 2.0
+  scale = Math.min(1.5, Math.max(1, scale + change)); // Limitar entre 0.5 y 2.0
   document.body.style.transform = `scale(${scale})`;
   document.body.style.transformOrigin = "top left";
   document.getElementById("scaleDisplay").textContent = scale.toFixed(1);

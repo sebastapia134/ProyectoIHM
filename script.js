@@ -234,15 +234,15 @@ function iniciarCamara() {
                 canvas.height = videoHeight;
 
                 video.style.position = 'absolute';
-                video.style.top = '50px'; 
-                video.style.right = '20px'; 
+                video.style.top = '10%'; 
+                video.style.right = '50%'; 
                 video.style.width = `${videoWidth}px`;
                 video.style.height = `${videoHeight}px`;
                 video.style.zIndex = '-1'; 
 
                 canvas.style.position = 'absolute';
-                canvas.style.top = '50px';
-                canvas.style.right = '20px';
+                canvas.style.top = '10%';
+                canvas.style.right = '50%';
                 canvas.style.zIndex = '1';
 
                 dibujarCuadrantes(); 
@@ -350,3 +350,24 @@ function detectarRojo(pixels) {
     }
     return false;
 }
+
+
+function loadSettings() {
+    const fontSize = parseInt(localStorage.getItem("fontSize")) || 16;
+    const scale = parseFloat(localStorage.getItem("scale")) || 1.0;
+    const sound = localStorage.getItem("soundEnabled") === "true";
+  
+    document.body.style.fontSize = `${fontSize}px`;
+    document.documentElement.style.fontSize = `${fontSize}px`;
+    document.body.style.transform = `scale(${scale})`;
+    document.body.style.transformOrigin = "top left";
+    soundEnabled = sound;
+
+    document.documentElement.style.setProperty('--current-scale', scale);
+  
+    // Actualizar controles
+    document.getElementById("fontSizeDisplay").textContent = fontSize;
+    document.getElementById("scaleDisplay").textContent = scale.toFixed(1);
+  }
+
+  loadSettings();

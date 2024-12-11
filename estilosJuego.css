@@ -8,6 +8,7 @@ body {
     align-items: center;
     height: 100vh;
 background-image: url("img/mosaico.jpg");    font-family: "Host Grotesk", sans-serif;
+   --current-scale: 1;
 
 }
 
@@ -15,6 +16,7 @@ background-image: url("img/mosaico.jpg");    font-family: "Host Grotesk", sans-s
     text-align: center;
     display: none;
     margin-left: 10px;
+    width:50%;
 }
 
 #imagesContainer img {
@@ -221,11 +223,13 @@ button:active {
 #cuadrantes {
     z-index: 999;
     position: absolute;
-    top: 50px; /* Ajusta esta posición si es necesario */
-    right: 20px; /* Ajusta esta posición si es necesario */
+    top: 10%; /* Ajusta esta posición si es necesario */
+    right: 50%; /* Ajusta esta posición si es necesario */
     width: 320px; /* Asegúrate de que esto coincida con el tamaño del video */
     height: 240px; /* Asegúrate de que esto coincida con el tamaño del video */
     border: 2px solid white;
+    transform: scale(calc(1 / var(--current-scale, 1)));
+    transform-origin: top left;
 }
 
 #cuadrantes::before, #cuadrantes::after {
