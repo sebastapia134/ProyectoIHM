@@ -6,7 +6,11 @@ const images = {
     bananas: 'img/banana.png'
 };
 
+
+
 let frutasMostradas = [];
+let opcionesMostradas = false;
+
 let puntaje = 0;
 let cuadranteSeleccionado = null;
 let frutaPreguntaActual = null;
@@ -29,28 +33,93 @@ const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
 const video = document.createElement('video');
 const optionsLetras = ['A', 'B', 'C', 'D'];
+const difficultyModal = document.getElementById('difficultyModal');
+const easyBtn = document.getElementById('easyBtn');
+const mediumBtn = document.getElementById('mediumBtn');
+const hardBtn = document.getElementById('hardBtn');
+
+let dificultad;
 
 // Iniciar el juego
 startBtn.addEventListener('click', () => {
     startModal.style.display = 'none';
+    
+    difficultyModal.style.display = 'block';
+});
+
+easyBtn.addEventListener('click', () => {
+
+    frutas.push(); // No se añaden frutas extra
+    difficultyModal.style.display = 'none';
     gameContainer.style.display = 'block';
-    iniciarJuego();
+    dificultad='facil';
+    console.log(dificultad);
+
+    iniciarJuego(dificultad);
+    iniciarCamara();
+
+});
+
+mediumBtn.addEventListener('click', () => {
+    frutas.push('naranjas');
+    images['naranjas'] = 'img/naranja.png';
+    difficultyModal.style.display = 'none';
+    gameContainer.style.display = 'block';
+    dificultad='media';
+    iniciarJuego(dificultad);
     iniciarCamara();
 });
 
+hardBtn.addEventListener('click', () => {
+    frutas.push('naranjas', 'sandias');
+    images['naranjas'] = 'img/naranja.png';
+    images['sandias'] = 'img/sandia.png';
+    difficultyModal.style.display = 'none';
+    gameContainer.style.display = 'block';
+    dificultad='dificil';
+    iniciarJuego(dificultad);
+    iniciarCamara();
+});
+
+
 // Función que inicia el juego
-function iniciarJuego() {
-    mostrarFrutas();
+function iniciarJuego(dificultad) {
+    mostrarFrutas(dificultad);
     setTimeout(mostrarPregunta, 5000);
 }
 
 // Función que muestra frutas al azar
-function mostrarFrutas() {
-    imagesContainer.innerHTML = '';
-    const cantidadFrutas = Math.floor(Math.random() * 5) + 1;
-    frutasMostradas = [];
+function mostrarFrutas(dificultad) {
+    let maxFrutas, minFrutas;
+    
+    // Establecer el mínimo y máximo según la dificultad
+    switch (dificultad) {
+        case 'facil':
+            maxFrutas = 3;
+            minFrutas = 1;  // Mínimo de 1 fruta
+            break;
+        case 'media':
+            maxFrutas = 5;
+            minFrutas = 3;  // Mínimo de 3 frutas
+            break;
+        case 'dificil':
+            maxFrutas = 7;
+            minFrutas = 6;  // Mínimo de 6 frutas
+            break;
+        default:
+            maxFrutas = 5;
+            minFrutas = 1;
+    }
 
-    console.log(`Generando ${cantidadFrutas} frutas...`); // Registra la cantidad de frutas generadas
+    console.log(dificultad);
+
+    imagesContainer.innerHTML = '';
+    
+    // Asegurarse de que la cantidad de frutas esté entre el mínimo y el máximo
+    const cantidadFrutas = Math.floor(Math.random() * (maxFrutas - minFrutas + 1)) + minFrutas;
+    
+    frutasMostradas = [];
+    console.log(`Generando ${cantidadFrutas} frutas...`); 
 
     for (let i = 0; i < cantidadFrutas; i++) {
         const fruta = frutas[Math.floor(Math.random() * frutas.length)];
@@ -60,8 +129,9 @@ function mostrarFrutas() {
         imagesContainer.appendChild(img);
     }
 
-    console.log(`Frutas mostradas: ${frutasMostradas.join(', ')}`); // Registra las frutas que se mostraron
+    console.log(`Frutas generadas (${cantidadFrutas}): ${frutasMostradas.join(', ')}`);
 }
+
 
 
 // Función que muestra la pregunta
@@ -89,7 +159,11 @@ function mostrarPregunta() {
         button.addEventListener('click', () => verificarRespuesta(opcion, cantidadFrutaPreguntaActual));
         optionsContainer.appendChild(button);
     });
+
+    // Activar detección
+    opcionesMostradas = true;
 }
+
 
 
 // Función que genera opciones aleatorias
@@ -126,7 +200,8 @@ function verificarRespuestaAutomatica() {
 
     puntajeDisplay.textContent = `Puntaje: ${puntaje}`;
 
-    // Restablecer vista
+    opcionesMostradas = false; // Desactivar detección
+
     setTimeout(() => {
         feedback.textContent = '';
         imagesContainer.innerHTML = '';
@@ -134,11 +209,12 @@ function verificarRespuestaAutomatica() {
         optionsContainer.innerHTML = '';
 
         setTimeout(() => {
-            mostrarFrutas();
+            mostrarFrutas(dificultad);
             setTimeout(mostrarPregunta, 5000);
         }, 1000);
     }, 2000);
 }
+
 
 
 
@@ -208,7 +284,7 @@ let ultimoCuadranteDetectado = null; // Registrar el último cuadrante detectado
 let colorRojoDetectado = false; // Estado para saber si el rojo fue detectado
 
 function detectarPaleta() {
-    if (detectando || tiempoDeEspera) return;
+    if (!opcionesMostradas || detectando || tiempoDeEspera) return;
 
     detectando = true;
     console.log("Detectando... no te muevas");
@@ -221,10 +297,8 @@ function detectarPaleta() {
         D: { x: canvas.width / 2, y: canvas.height / 2, width: canvas.width / 2, height: canvas.height / 2 }
     };
 
-    // Variable para saber si se detectó rojo en algún cuadrante
     let rojoDetectadoEnAlgúnCuadrante = false;
 
-    // Recorremos los cuadrantes para detectar rojo
     Object.keys(cuadrantes).forEach(cuadrante => {
         const { x, y, width, height } = cuadrantes[cuadrante];
         const pixels = ctx.getImageData(x, y, width, height).data;
@@ -232,7 +306,6 @@ function detectarPaleta() {
 
         if (colorRojo) {
             if (!rojoDetectadoEnAlgúnCuadrante) {
-                // Si es la primera vez que detectamos rojo
                 console.log("Detectando... no te muevas");
                 rojoDetectadoEnAlgúnCuadrante = true;
             }
@@ -241,31 +314,30 @@ function detectarPaleta() {
                 cuadranteSeleccionado = cuadrante;
                 console.log(`Respuesta ${cuadrante} seleccionada`);
 
-                ultimoCuadranteDetectado = cuadrante; // Actualizar cuadrante detectado
-                verificarRespuestaAutomatica(); // Verificar la respuesta
+                ultimoCuadranteDetectado = cuadrante;
+                verificarRespuestaAutomatica();
 
-                // Bloquear detección adicional temporalmente
                 tiempoDeEspera = true;
                 setTimeout(() => {
-                    tiempoDeEspera = false; // Reanudar detección
-                    ultimoCuadranteDetectado = null; // Resetear el último cuadrante
+                    tiempoDeEspera = false;
+                    ultimoCuadranteDetectado = null;
                 }, 3000);
             }
         }
     });
 
-    // Si no hay más color rojo, resetear el estado
     if (!rojoDetectadoEnAlgúnCuadrante && colorRojoDetectado) {
         console.log("Se detuvo el movimiento, prepárate para detectar nuevamente.");
         colorRojoDetectado = false;
     } else if (rojoDetectadoEnAlgúnCuadrante) {
-        colorRojoDetectado = true; // Aseguramos que detectamos rojo al menos una vez
+        colorRojoDetectado = true;
     }
 
     setTimeout(() => {
-        detectando = false; // Permitir nuevas detecciones
+        detectando = false;
     }, 1000);
 }
+
 
 function detectarRojo(pixels) {
     for (let i = 0; i < pixels.length; i += 4) {
