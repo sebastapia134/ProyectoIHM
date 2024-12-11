@@ -95,3 +95,24 @@ function closeHelp() {
     currentStep = 1;
   }
 
+
+  function loadSettings() {
+    const fontSize = parseInt(localStorage.getItem('fontSize')) || 16;
+    const scale = parseFloat(localStorage.getItem('scale')) || 1.0;
+    const sound = localStorage.getItem('soundEnabled') === 'true';
+  
+    document.documentElement.style.setProperty('--base-font-size', `${fontSize}px`);
+    document.body.style.transform = `scale(${scale})`;
+    document.body.style.transformOrigin = 'top left';
+    soundEnabled = sound;
+  
+    // Actualizar controles
+    document.getElementById('fontSizeDisplay').textContent = fontSize;
+    document.getElementById('scaleDisplay').textContent = scale.toFixed(1);
+  }
+
+  window.addEventListener('DOMContentLoaded', loadSettings);
+
+
+  
+

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configuración</title>
+  <link rel="stylesheet" href="configuracion.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="fondo">
+    
+    <div id="config-container">
+      <h1>Configuración</h1>
+
+      <section>
+        <h2>Texto</h2>
+        <label for="fontSize">Tamaño de texto</label>
+        <div class="control-group">
+          <button id="decreaseFont" class="btn btn-round">-</button>
+          <span id="fontSizeDisplay">16</span>
+          <button id="increaseFont" class="btn btn-round">+</button>
+        </div>
+      </section>
+
+      <section>
+        <h2>Escalar Interfaz</h2>
+        <label for="scale">Escala</label>
+        <div class="control-group">
+          <button id="decreaseScale" class="btn btn-round">-</button>
+          <span id="scaleDisplay">1.0</span>
+          <button id="increaseScale" class="btn btn-round">+</button>
+        </div>
+      </section>
+
+      <section>
+        <h2>Sonidos</h2>
+        <button id="toggleSoundBtn" class="btn btn-toggle">
+          <span class="toggle-text">Activar Sonido</span>
+          <span class="toggle-switch"></span>
+        </button>
+      </section>
+    </div>
+  </div>
+
+  <script src="configuracion.js"></script>
+</body>
+</html>
+
