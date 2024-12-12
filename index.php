@@ -9,7 +9,7 @@ include 'auth.php'?>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Pagina Usuario</title>
     <link rel="stylesheet" href="estilosIndex.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,7 +25,8 @@ include 'auth.php'?>
         <div id="titulo"></div>
         <div id="jugar" onclick="window.location='juego.php';">>JUGAR<</div>
         <div id="saludo">Hola, <?php echo htmlspecialchars($_SESSION['usuario'])?>!</div>
-     
+        <div id="login"><img src="img/user_login.png" width="43px" height="43px" onclick="window.location='login.php';"></div>
+
         <div id="ayuda" onclick=updateHelpContent()>?</div>
         <div id="ayudaBloque"></div>
     </div>
