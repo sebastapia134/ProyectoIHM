@@ -22,6 +22,8 @@ let opcionCorrecta = null;
 
 // Elementos HTML
 const startModal = document.getElementById('startModal');
+const resultados= document.getElementById('resultados');
+const puntajeHTML=document.getElementById('puntaje');
 const startBtn = document.getElementById('startBtn');
 const gameContainer = document.getElementById('gameContainer');
 const imagesContainer = document.getElementById('imagesContainer');
@@ -37,6 +39,10 @@ const difficultyModal = document.getElementById('difficultyModal');
 const easyBtn = document.getElementById('easyBtn');
 const mediumBtn = document.getElementById('mediumBtn');
 const hardBtn = document.getElementById('hardBtn');
+
+const usuario_idInput = document.getElementById("usuario_idInput").value;
+const puntajeInput = document.getElementById("puntajeInput").value;
+const dificultadInput = document.getElementById("dificultadInput").value;
 
 let dificultad;
 
@@ -205,7 +211,9 @@ function verificarRespuestaAutomatica() {
 
     opcionesMostradas = false; // Desactivar detección
 
-    if(contador<=3){
+    if(contador<=1){
+        contador++;
+
         setTimeout(() => {
             feedback.textContent = '';
             imagesContainer.innerHTML = '';
@@ -217,9 +225,11 @@ function verificarRespuestaAutomatica() {
                 setTimeout(mostrarPregunta, 5000);
             }, 1000);
         }, 2000);
-        contador++;
     }else{
-        alert("Juego terminado")
+        puntajeHTML.textContent=`Puntaje: ${puntaje}`;
+        puntajeInput.value=`${puntaje}`;
+        dificultadInput.value=`${dificultad}`;
+        resultados.style.display = 'block';
     }
     
 }

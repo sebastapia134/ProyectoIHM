@@ -20,7 +20,7 @@
 
     <div id="principal">
         <div id="titulo"></div>
-        <div id="jugar" onclick="window.location='juego.html';">>JUGAR<</div>
+        <div id="jugar" onclick="window.location='juego.php';">>JUGAR<</div>
         <div id="saludo">Hola, <?php echo htmlspecialchars($_SESSION['usuario'])?>!</div>
         <div id="login"><img src="img/user_login.png" width="43px" height="43px"></div>
         <div id="ayuda" onclick=updateHelpContent()>?</div>

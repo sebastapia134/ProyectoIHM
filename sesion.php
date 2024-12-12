@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $contraseña = $_POST['contraseña'];
 
     // Preparar y ejecutar la consulta
-    $stmt = $conn->prepare("SELECT * FROM login WHERE usuario = ?");
+        $stmt = $conn->prepare("SELECT * FROM login WHERE usuario = ?");
     $stmt->bind_param("s", $usuario);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -34,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (password_verify($contraseña, $row['contraseña'])) {
             // Guardar el usuario en la sesión
             $_SESSION['usuario'] = $usuario;
+            $_SESSION['id']=$row['id'];
             header('Location: index.php'); // Redirigir a una página de éxito
             exit();
         } else {

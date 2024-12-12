@@ -61,6 +61,20 @@
 </div>
 
 
+    <div id="resultados" class="modal-resultados" style="display:none; padding-top:150px">
+        <div class="modal-content-resultados">
+            <h2>¡Gracias por jugar!</h2>
+            <p id="puntaje">Puntaje Obtenido: </p>
+            <form action="insertar.php" method="post">
+            <input type="submit" value="Entendido" onclick="window.location='index.php';">
+            <input type="text" id="usuario_idInput" name="usuario_idInput" style="display:none;" value="<?php echo htmlspecialchars($_SESSION['usuario']) ?>"><br><br>
+            <input type="number" id="puntajeInput" name="puntajeInput" style="display:none;"><br><br>
+            <input type="text" id="dificultadInput" name="dificultadInput" style="display:none;"><br><br>
+
+
+            </form>
+        </div>
+    </div>
     
 
     <script src="script.js"></script>
