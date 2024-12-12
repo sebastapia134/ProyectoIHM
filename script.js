@@ -40,9 +40,9 @@ const easyBtn = document.getElementById('easyBtn');
 const mediumBtn = document.getElementById('mediumBtn');
 const hardBtn = document.getElementById('hardBtn');
 
-const usuario_idInput = document.getElementById("usuario_idInput").value;
-const puntajeInput = document.getElementById("puntajeInput").value;
-const dificultadInput = document.getElementById("dificultadInput").value;
+
+let puntajeInput = document.getElementById("puntajeInput").value;
+let dificultadInput = document.getElementById("dificultadInput").value;
 
 let dificultad;
 
@@ -60,7 +60,7 @@ easyBtn.addEventListener('click', () => {
     gameContainer.style.display = 'block';
     dificultad='facil';
     console.log(dificultad);
-
+    dificultadInput.value=dificultad;
     iniciarJuego(dificultad);
     iniciarCamara();
 
@@ -72,6 +72,8 @@ mediumBtn.addEventListener('click', () => {
     difficultyModal.style.display = 'none';
     gameContainer.style.display = 'block';
     dificultad='media';
+    dificultadInput.value=dificultad;
+
     iniciarJuego(dificultad);
     iniciarCamara();
 });
@@ -83,6 +85,8 @@ hardBtn.addEventListener('click', () => {
     difficultyModal.style.display = 'none';
     gameContainer.style.display = 'block';
     dificultad='dificil';
+    dificultadInput.value=dificultad;
+
     iniciarJuego(dificultad);
     iniciarCamara();
 });
@@ -187,6 +191,7 @@ function generarOpciones(cantidadFrutaPregunta, frutaPregunta) {
 }
 
 let contador=0;
+let puntajeFinal=0;
 // Función para verificar la respuesta automáticamente
 function verificarRespuestaAutomatica() {
     if (cuadranteSeleccionado === null) return;
@@ -208,7 +213,7 @@ function verificarRespuestaAutomatica() {
     }
 
     puntajeDisplay.textContent = `Puntaje: ${puntaje}`;
-
+    puntajeFinal=puntaje;
     opcionesMostradas = false; // Desactivar detección
 
     if(contador<=1){
@@ -226,9 +231,16 @@ function verificarRespuestaAutomatica() {
             }, 1000);
         }, 2000);
     }else{
-        puntajeHTML.textContent=`Puntaje: ${puntaje}`;
-        puntajeInput.value=`${puntaje}`;
-        dificultadInput.value=`${dificultad}`;
+       
+        
+        puntajeHTML.textContent=`Puntaje: ${puntajeFinal}`;
+        
+        document.getElementById("puntajeInput").value=`${puntajeFinal}`;
+        document.getElementById("dificultadInput").value=`${dificultad}`;
+        console.log("Valores después de cambiar:");
+        console.log(`puntajeInput.value: ${document.getElementById("puntajeInput").value}`);
+        console.log(`dificultadInput.value: ${document.getElementById("dificultadInput").value}`);
+      
         resultados.style.display = 'block';
     }
     

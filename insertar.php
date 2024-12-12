@@ -17,7 +17,7 @@ if ($conn->connect_error) {
 }
 
 // Obtener los valores del formulario
-$usuario_id = $_SESSION['id'];
+$usuario_id = $_SESSION['id'] ?? 1;
 $puntaje = $_POST['puntajeInput'];
 $dificultad = $_POST['dificultadInput'];
 
@@ -25,7 +25,7 @@ $dificultad = $_POST['dificultadInput'];
 $sql = "INSERT INTO puntajes (usuario_id, puntaje, dificultad) VALUES (?, ?, ?)";
 
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("iii", $usuario_id, $puntaje, $dificultad);
+$stmt->bind_param("iis", $usuario_id, $puntaje, $dificultad);
 $stmt->execute();
 
 // Verificar si se insertó correctamente

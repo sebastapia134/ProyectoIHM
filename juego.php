@@ -68,8 +68,8 @@
             <form action="insertar.php" method="post">
             <input type="submit" value="Entendido" onclick="window.location='index.php';">
             <input type="text" id="usuario_idInput" name="usuario_idInput" style="display:none;" value="<?php echo htmlspecialchars($_SESSION['usuario']) ?>"><br><br>
-            <input type="number" id="puntajeInput" name="puntajeInput" style="display:none;"><br><br>
-            <input type="text" id="dificultadInput" name="dificultadInput" style="display:none;"><br><br>
+            <input type="number" id="puntajeInput" name="puntajeInput" style="visibility: hidden;" value="300">
+            <input type="text" id="dificultadInput" name="dificultadInput" style="visibility: hidden;" value="facil">
 
 
             </form>
