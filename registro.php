@@ -13,6 +13,7 @@ if ($conn->connect_error) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $usuario = $_POST['usuario'];
     $contraseña = password_hash($_POST['contraseña'], PASSWORD_DEFAULT); // Encripta la contraseña
+    $rol = 'usuario'; // Rol por defecto
 
     // Verifica si el usuario ya existe
     $query = "SELECT * FROM login WHERE usuario = ?";
@@ -24,10 +25,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($result->num_rows > 0) {
         echo "El usuario ya está registrado.";
     } else {
-        // Inserta un nuevo usuario
-        $query = "INSERT INTO login (usuario, contraseña) VALUES (?, ?)";
+        // Inserta un nuevo usuario con rol predeterminado
+        $query = "INSERT INTO login (usuario, contraseña, rol) VALUES (?, ?, ?)";
         $stmt = $conn->prepare($query);
-        $stmt->bind_param("ss", $usuario, $contraseña);
+        $stmt->bind_param("sss", $usuario, $contraseña, $rol);
         if ($stmt->execute()) {
             echo "Registro exitoso. <a href='login.php'>Volver al login</a>";
         } else {
@@ -38,6 +39,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->close();
 }
 $conn->close();
-
-
 ?>

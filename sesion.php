@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $contraseña = $_POST['contraseña'];
 
     // Preparar y ejecutar la consulta
-        $stmt = $conn->prepare("SELECT * FROM login WHERE usuario = ?");
+    $stmt = $conn->prepare("SELECT * FROM login WHERE usuario = ?");
     $stmt->bind_param("s", $usuario);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -30,12 +30,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         
-        // Verificar la contraseña (suponiendo que está encriptada)
+        // Verificar la contraseña
         if (password_verify($contraseña, $row['contraseña'])) {
-            // Guardar el usuario en la sesión
+            // Guardar el usuario y rol en la sesión
             $_SESSION['usuario'] = $usuario;
-            $_SESSION['id']=$row['id'];
-            header('Location: index.php'); // Redirigir a una página de éxito
+            $_SESSION['id'] = $row['id'];
+            $_SESSION['rol'] = $row['rol']; // Asume que 'rol' existe en la tabla login
+
+            // Redirigir según el rol
+            if ($row['rol'] === 'admin') {
+                header('Location: index_admin.php'); // Redirigir al panel admin
+            } else {
+                header('Location: index.php'); // Redirigir al panel usuario
+            }
             exit();
         } else {
             echo "Contraseña incorrecta.";

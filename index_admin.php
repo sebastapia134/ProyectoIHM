@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php 
-$required_role = 'usuario'; // Solo permite usuarios regulares
+$required_role = 'admin'; // Solo permite usuarios regulares
 
 include 'auth.php'?>
 
@@ -25,7 +25,8 @@ include 'auth.php'?>
         <div id="titulo"></div>
         <div id="jugar" onclick="window.location='juego.php';">>JUGAR<</div>
         <div id="saludo">Hola, <?php echo htmlspecialchars($_SESSION['usuario'])?>!</div>
-     
+        <div id="usuarios"><img src="img/usuarios.png" width="43px" height="43px" onclick="window.location='crudUsuarios.php';"></div>
+        <div id="login"><img src="img/ranking.png" width="43px" height="43px" onclick="window.location='ranking.php';"></div>
         <div id="ayuda" onclick=updateHelpContent()>?</div>
         <div id="ayudaBloque"></div>
     </div>

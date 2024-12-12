@@ -14,10 +14,10 @@ if ($conn->connect_error) {
 
 // Consulta para obtener los puntajes ordenados por puntaje descendente
 $sql = "SELECT u.usuario AS usuario, p.puntaje, p.dificultad, p.fecha, 
-        (SELECT COUNT(*) FROM puntajes WHERE puntaje > p.puntaje) + 1 AS posicion
-        FROM puntajes p
-        INNER JOIN login u ON p.usuario_id = u.id
-        ORDER BY p.puntaje DESC;";
+       DENSE_RANK() OVER (ORDER BY p.puntaje DESC) AS posicion
+FROM puntajes p
+INNER JOIN login u ON p.usuario_id = u.id
+ORDER BY p.puntaje DESC;";
 
 $result = $conn->query($sql);
 
