@@ -33,7 +33,7 @@ include 'auth.php'?>
 
     <div id="right-container">
 
-        <div id="configuracion" onclick="window.location='configuracion.html';"></div>
+        <div id="configuracion" onclick="window.location='configuracionAdmin.html';"></div>
         <div id="salir" onclick="window.location='login.php';"></div>
     
     </div>
