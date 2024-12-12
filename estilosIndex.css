@@ -1,10 +1,27 @@
 /* Configuración general */
+
+@keyframes flotando {
+    0% {
+        transform: translateY(0); /* Posición inicial */
+    }
+    50% {
+        transform: translateY(-10px); /* Sube ligeramente */
+    }
+    100% {
+        transform: translateY(0); /* Vuelve a la posición inicial */
+    }
+}
+
+
+
 body {
     display: flex;
     height: 100vh;
     margin: 0;
     font-family: "Host Grotesk", sans-serif;
-    
+    background-image: url("img/mosaico.jpg");
+    background-blend-mode: multiply; /* Otras opciones: overlay, screen, etc. */
+    background-color: rgb(88, 111, 137); /* Capa de color (rojo semitransparente) */
 }
 
 #sidebar {
@@ -28,6 +45,7 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+    
 }
 
 #principal {
@@ -59,6 +77,8 @@ body {
     cursor: pointer;
     text-align: center;
     text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7); /* Sombra negra */
+    animation: flotando 3s ease-in-out infinite; /* Animación aplicada */
+
 }
 
 #saludo {
@@ -71,6 +91,7 @@ body {
     padding: 10px 20px;
     color: #ffffff; /* Color dorado */
     text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7); /* Sombra negra */
+    
 }
 
 
@@ -112,6 +133,9 @@ body {
     background-size: cover;
     background-position: center;
     cursor: pointer;
+    margin-left: 110px;
+    animation: flotando 3s ease-in-out infinite; /* Animación aplicada */
+
 }
 
 #salir {
@@ -123,6 +147,10 @@ body {
     background-size: cover;
     background-position: center;
     cursor: pointer;
+    margin-left: 110px;
+    animation: flotando 5s ease-in-out infinite; /* Animación aplicada */
+
+
 }
 
 

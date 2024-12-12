@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<?php include 'auth.php'?>
+
 
 <html lang="en">
 <head>
@@ -19,7 +21,7 @@
     <div id="principal">
         <div id="titulo"></div>
         <div id="jugar" onclick="window.location='juego.html';">>JUGAR<</div>
-        <div id="saludo">Hola, Stuart Little!</div>
+        <div id="saludo">Hola, <?php echo htmlspecialchars($_SESSION['usuario'])?>!</div>
         <div id="login"><img src="img/user_login.png" width="43px" height="43px"></div>
         <div id="ayuda" onclick=updateHelpContent()>?</div>
         <div id="ayudaBloque"></div>
@@ -28,7 +30,7 @@
     <div id="right-container">
 
         <div id="configuracion" onclick="window.location='configuracion.html';"></div>
-        <div id="salir" onclick="window.location='salir.html';"></div>
+        <div id="salir" onclick="window.location='login.php';"></div>
     
     </div>
 

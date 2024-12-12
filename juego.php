@@ -10,6 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
 </head>
 <body>
+
+    <?php include 'auth.php'?>
     <!-- Modal de inicio -->
     <div id="startModal" class="modal">
         <div class="modal-content">
@@ -47,7 +49,10 @@
 
     <!-- Modal de selección de dificultad -->
 <div id="difficultyModal" class="modal">
-    <div class="modal-content">
+    <div class="modal-content" style="
+    margin-left: 40px;
+    margin-top: 40px;
+">
         <h2>Selecciona la dificultad</h2>
         <button id="easyBtn">Fácil</button>
         <button id="mediumBtn">Medio</button>

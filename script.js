@@ -81,11 +81,13 @@ hardBtn.addEventListener('click', () => {
     iniciarCamara();
 });
 
-
 // Función que inicia el juego
 function iniciarJuego(dificultad) {
-    mostrarFrutas(dificultad);
-    setTimeout(mostrarPregunta, 5000);
+    
+        mostrarFrutas(dificultad);
+        setTimeout(mostrarPregunta, 5000);
+
+   
 }
 
 // Función que muestra frutas al azar
@@ -178,6 +180,7 @@ function generarOpciones(cantidadFrutaPregunta, frutaPregunta) {
     return opciones.sort(() => Math.random() - 0.5);
 }
 
+let contador=0;
 // Función para verificar la respuesta automáticamente
 function verificarRespuestaAutomatica() {
     if (cuadranteSeleccionado === null) return;
@@ -202,17 +205,23 @@ function verificarRespuestaAutomatica() {
 
     opcionesMostradas = false; // Desactivar detección
 
-    setTimeout(() => {
-        feedback.textContent = '';
-        imagesContainer.innerHTML = '';
-        questionContainer.innerHTML = '';
-        optionsContainer.innerHTML = '';
-
+    if(contador<=3){
         setTimeout(() => {
-            mostrarFrutas(dificultad);
-            setTimeout(mostrarPregunta, 5000);
-        }, 1000);
-    }, 2000);
+            feedback.textContent = '';
+            imagesContainer.innerHTML = '';
+            questionContainer.innerHTML = '';
+            optionsContainer.innerHTML = '';
+    
+            setTimeout(() => {
+                mostrarFrutas(dificultad);
+                setTimeout(mostrarPregunta, 5000);
+            }, 1000);
+        }, 2000);
+        contador++;
+    }else{
+        alert("Juego terminado")
+    }
+    
 }
 
 
@@ -235,14 +244,14 @@ function iniciarCamara() {
 
                 video.style.position = 'absolute';
                 video.style.top = '10%'; 
-                video.style.right = '50%'; 
+                video.style.right = '5%'; 
                 video.style.width = `${videoWidth}px`;
                 video.style.height = `${videoHeight}px`;
                 video.style.zIndex = '-1'; 
 
                 canvas.style.position = 'absolute';
                 canvas.style.top = '10%';
-                canvas.style.right = '50%';
+                canvas.style.right = '5%';
                 canvas.style.zIndex = '1';
 
                 dibujarCuadrantes(); 
