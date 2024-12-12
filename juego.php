@@ -11,7 +11,11 @@
 </head>
 <body>
 
-    <?php include 'auth.php'?>
+    <?php 
+    $required_role = 'usuario'; // Solo permite usuarios regulares
+
+    include 'auth.php'
+    ?>
     <!-- Modal de inicio -->
     <div id="startModal" class="modal">
         <div class="modal-content">
@@ -76,6 +80,9 @@
         </div>
     </div>
     
+
+    <div id="feedbackImagen" class="feedback-imagen"></div>
+
 
     <script src="script.js"></script>
 </body>

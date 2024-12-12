@@ -288,3 +288,35 @@ button:active {
 /* Opcional: posición de las letras A, B, C, D en la parte superior izquierda de cada cuadrante */
 
 
+
+.feedback-imagen {
+    position: absolute;
+    bottom: 0%; /* Posición inicial */
+    left: 80%; /* Ajusta según tu diseño */
+    transform: translate(-50%, 0); /* Centra horizontalmente */
+    display: none;
+    width: 400px; /* Tamaño deseado */
+    height: 400px; /* Tamaño deseado */
+    animation: fadeInImagen 3s ease-in-out;
+}
+
+.feedback-imagen img {
+    width: 100%; /* Ajusta el ancho al contenedor */
+    height: auto; /* Mantén las proporciones */
+    display: block;
+}
+
+@keyframes fadeInImagen {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, 0); /* Posición inicial */
+    }
+    50% {
+        opacity: 1;
+        transform: translate(-50%, 0); /* Imagen completamente visible */
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, 50px); /* Baja 50px al desaparecer */
+    }
+}

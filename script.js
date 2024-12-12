@@ -204,19 +204,35 @@ function verificarRespuestaAutomatica() {
     console.log(`Opción seleccionada: ${cuadranteSeleccionado}`);
     console.log(`Opción correcta: ${opcionCorrectaSeleccionada}`);
 
+    let imagenFeedback = document.getElementById("feedbackImagen");
+
     if (cuadranteSeleccionado === opcionCorrectaSeleccionada) {
         feedback.textContent = '¡Correcto!';
         puntaje += 100;
+
+        // Mostrar imagen de ratón correcto
+        imagenFeedback.innerHTML = `<img src="img/ratonBien.png" alt="Correcto" />`;
+        imagenFeedback.style.display = 'block';
+
     } else {
         feedback.textContent = `Incorrecto, la respuesta correcta era ${opcionCorrectaSeleccionada}.`;
         puntaje -= 50;
+
+        // Mostrar imagen de ratón incorrecto
+        imagenFeedback.innerHTML = `<img src="img/ratonMal.png" alt="Incorrecto" />`;
+        imagenFeedback.style.display = 'block';
     }
 
     puntajeDisplay.textContent = `Puntaje: ${puntaje}`;
-    puntajeFinal=puntaje;
+    puntajeFinal = puntaje;
     opcionesMostradas = false; // Desactivar detección
 
-    if(contador<=1){
+    // Ocultar la imagen después de 2 segundos
+    setTimeout(() => {
+        imagenFeedback.style.display = 'none';
+    }, 2000);
+
+    if (contador <= 5) {
         contador++;
 
         setTimeout(() => {
@@ -230,21 +246,19 @@ function verificarRespuestaAutomatica() {
                 setTimeout(mostrarPregunta, 5000);
             }, 1000);
         }, 2000);
-    }else{
-       
+    } else {
+        puntajeHTML.textContent = `Puntaje: ${puntajeFinal}`;
         
-        puntajeHTML.textContent=`Puntaje: ${puntajeFinal}`;
-        
-        document.getElementById("puntajeInput").value=`${puntajeFinal}`;
-        document.getElementById("dificultadInput").value=`${dificultad}`;
+        document.getElementById("puntajeInput").value = `${puntajeFinal}`;
+        document.getElementById("dificultadInput").value = `${dificultad}`;
         console.log("Valores después de cambiar:");
         console.log(`puntajeInput.value: ${document.getElementById("puntajeInput").value}`);
         console.log(`dificultadInput.value: ${document.getElementById("dificultadInput").value}`);
       
         resultados.style.display = 'block';
     }
-    
 }
+
 
 
 
