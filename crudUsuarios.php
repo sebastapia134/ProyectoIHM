@@ -15,6 +15,22 @@ if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
+// Procesar la creación del nuevo usuario
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $usuario = $_POST['usuario'];
+    $contrasena = password_hash($_POST['contraseña'], PASSWORD_DEFAULT);  // Seguridad en la contraseña
+    $rol = $_POST['rol'];
+
+    // Insertar el nuevo usuario en la base de datos
+    $sql = "INSERT INTO login (usuario, contraseña, rol) VALUES ('$usuario', '$contrasena', '$rol')";
+    
+    if ($conn->query($sql) === TRUE) {
+        echo "<script>alert('Nuevo usuario creado correctamente');</script>";
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    }
+}
+
 // Consulta para obtener los usuarios
 $query = "SELECT * FROM login";
 $result = $conn->query($query);
@@ -82,11 +98,54 @@ $result = $conn->query($query);
             display: flex;
             gap: 10px;
         }
+        .form-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .form-container input,
+        .form-container select {
+            padding: 10px;
+            margin-bottom: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .form-container button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .form-container button:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Gestión de Usuarios</h1>
+
+        <!-- Formulario para crear un nuevo usuario -->
+        <div class="form-container">
+            <h2>Crear Usuario</h2>
+            <form method="POST" action="">
+                <input type="text" name="usuario" placeholder="Nombre de usuario" required>
+                <input type="password" name="contraseña" placeholder="Contraseña" required>
+                <select name="rol" required>
+                    <option value="usuario">Usuario</option>
+                    <option value="admin">Administrador</option>
+                </select>
+                <button type="submit">Crear Usuario</button>
+            </form>
+        </div>
+
         <table>
             <thead>
                 <tr>
